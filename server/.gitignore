@@ -1,0 +1,17 @@
+/dist
+/node_modules
+/build
+.env
+/coverage
+/.vscode/settings.json
+output/coverage
+test-report.html
+public/
+build-obfuscator/
+src/test-fish-builder.ts
+data
+/data
+fish-model-lib
+logs
+
+.env.monitor

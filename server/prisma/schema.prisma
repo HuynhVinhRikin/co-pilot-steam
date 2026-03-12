@@ -1,0 +1,42 @@
+// AI STEAM Co-pilot – Prisma schema
+// PostgreSQL
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id         String       @id @default(cuid())
+  email      String       @unique
+  role       String?      // e.g. "teacher", "admin"
+  lessonPlans LessonPlan[]
+}
+
+model LessonPlan {
+  id            String   @id @default(cuid())
+  userId        String
+  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  subject       String?
+  grade         String?
+  lessonName    String
+  step1         String?  @db.Text
+  step2         String?  @db.Text
+  step3         String?  @db.Text
+  step4         String?  @db.Text
+  step5         String?  @db.Text
+  chatHistory   Json?    // array of { role, content } for RAG
+  finalMarkdown String?  @db.Text
+  isEvaluated   Boolean  @default(false)
+  rating        Int?     // 1-5
+  isGoodCase    Boolean  @default(false) // true if rating >= 4 for RAG
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@index([userId])
+  @@index([isGoodCase])
+}
